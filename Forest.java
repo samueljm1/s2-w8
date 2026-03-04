@@ -15,7 +15,7 @@ public class Forest {
     private Tree[][] grid;
 
     public Forest(String name, String type, String vegetation, double burnRate, int burnDuration, int initialTreeCount, int gridRows, int gridCols) {
-        this.grid = null; //TODO; initialize grid to using gridRows and gridCols
+        this.grid = new Tree[gridRows][gridCols]; //TODO; initialize grid to using gridRows and gridCols
         this.name = name;
         this.type = type;
         this.vegetation = vegetation;
@@ -31,6 +31,25 @@ public class Forest {
         // Step 2: Fill the grid with EMPTY trees first so every cell has a Tree object.
         // Step 3: Randomly place TREE states until the target initial tree count is reached.
         // Step 4: Reset any burn-time/state tracking needed for a fresh simulation start.
+
+        for(int i = 0; i < grid.length; i++){
+            for(int ii = 0; i < grid[i].length; ii++){
+                grid[i][ii] = new Tree(Tree.EMPTY);
+            }
+        }
+        
+        int count = 0;
+        while(count < this.initialTreeCount){
+            int r = (int)Math.random()*grid.length;
+            int c = (int)Math.random()*grid[0].length;
+            Tree tr = grid[r][c];
+            tr.setBurnTime(0);
+            if(tr.getState() == Tree.EMPTY){
+                tr.setState(Tree.TREE);
+                count++;
+            }
+        }        
+
     }
 
     public Tree[][] deepCopy(){
